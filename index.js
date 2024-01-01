@@ -51,16 +51,17 @@ async function run() {
             try {
                 const { name, details, price } = req.body;
 
-                console.log(req.body);
-                // Create a new property using the Property model
-                const newProperty = new Property({
+                // Create a document to be inserted
+                const propertyDocument = {
                     name,
                     details,
                     price,
-                });
-                console.log(newProperty);
-                // Save the property to the database
-                // await newProperty.save();
+                };
+
+                // Insert a single document
+                const result = await properitesCollection.insertOne(propertyDocument);
+
+                console.log('Inserted property ID:', result.insertedId);
 
                 res.status(201).json({ message: 'Property added successfully' });
             } catch (error) {
@@ -68,6 +69,7 @@ async function run() {
                 res.status(500).json({ error: 'Internal Server Error' });
             }
         });
+
 
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
