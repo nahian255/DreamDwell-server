@@ -46,6 +46,29 @@ async function run() {
             }
         });
 
+
+        app.post('/api/add-properties', async (req, res) => {
+            try {
+                const { name, details, price } = req.body;
+
+                console.log(req.body);
+                // Create a new property using the Property model
+                const newProperty = new Property({
+                    name,
+                    details,
+                    price,
+                });
+                console.log(newProperty);
+                // Save the property to the database
+                // await newProperty.save();
+
+                res.status(201).json({ message: 'Property added successfully' });
+            } catch (error) {
+                console.error('Error adding property:', error);
+                res.status(500).json({ error: 'Internal Server Error' });
+            }
+        });
+
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
         // Ensures that the client will close when you finish/error
