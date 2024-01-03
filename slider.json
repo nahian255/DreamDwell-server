@@ -24,22 +24,28 @@
         "id": 4,
         "name": "Aliva Priva Jardin",
         "price": "47,043",
-        "detail": "Jakarta Garden City Street, Cakung. Pulo Gadung, Jakarta Timur, DKI Jakarta",
-        "image": "https://img.freepik.com/premium-photo/green-environmentally-friendly-housing-concept_572887-8002.jpg?size=626&ext=jpg&ga=GA1.1.1826414947.1700265600&semt=ais"
+        "detail": "Massive opportunity to build your dream home at the base of Mummy Mountain in the 3 C's school district. Home is currently updated and very livable if your plans are to build at a later date.* Bonus * to live hillside without hillside restrictions in the town of PV. Run don't walk to capture this needle in a hay stack.",
+        "image": "https://img.freepik.com/premium-photo/green-environmentally-friendly-housing-concept_572887-8002.jpg?size=626&ext=jpg&ga=GA1.1.1826414947.1700265600&semt=ais",
+        "bathroom": "3",
+        "rooms": "2"
     },
     {
         "id": 5,
         "name": "Asatti Garden City",
         "price": "66,353",
         "detail": "Pahlawan Street XVII No.215, Cinangka, Sawangan, Depok, Jawa Barat",
-        "image": "https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8fA%3D%3D"
+        "image": "https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8fA%3D%3D",
+        "bathroom": "5",
+        "rooms": "4"
     },
     {
         "id": 6,
         "name": "Citralan Puri Serang",
         "price": "35,853",
         "detail": "Ruko Puri Indah Residence Block A7, Lingkar Street, Ciracas, Serang, Banten",
-        "image": "https://storage.googleapis.com/wzukusers/user-500000/images/qlkU8hySm0G8YvWyi4sK3g_1450.jpg"
+        "image": "https://storage.googleapis.com/wzukusers/user-500000/images/qlkU8hySm0G8YvWyi4sK3g_1450.jpg",
+        "bathroom": "5",
+        "rooms": "4"
     },
     {
         "id": 7,

@@ -5,6 +5,8 @@ const port = 3000
 const cors = require('cors');
 require('dotenv').config();
 const Property = require('./models/property');
+const { ObjectId } = require('mongodb');
+
 
 // this is all about exprement
 const fs = require('fs/promises');
@@ -36,7 +38,7 @@ async function run() {
         const properitesCollection = client.db('dreamDwell').collection('properitesInfo');
 
         // Read (Query) operation
-        app.get('/api/items', async (req, res) => {
+        app.get('/api/properites', async (req, res) => {
             try {
                 const items = await properitesCollection.find().toArray();
                 res.send(items);
@@ -46,7 +48,7 @@ async function run() {
             }
         });
 
-
+        // add a property in database.
         app.post('/api/add-properties', async (req, res) => {
             try {
                 const { name, details, price } = req.body;
@@ -71,6 +73,31 @@ async function run() {
         });
 
 
+        // get single property detials...
+        app.get('/api/single-properites/:id', async (req, res) => {
+            try {
+                const itemId = req.params.id;
+                // Check if itemId is a valid ObjectId
+                if (!ObjectId.isValid(itemId)) {
+                    return res.status(400).json({ error: 'Invalid ObjectID' });
+                }
+                const item = await properitesCollection.findOne({ _id: new ObjectId(itemId) });
+                if (item) {
+                    res.json(item);
+                } else {
+                    res.status(404).json({ error: 'Item not found' });
+                }
+            } catch (error) {
+                console.error(error);
+                res.status(500).json({ error: 'Internal Server Error' });
+            }
+        });
+
+        // ...
+
+
+
+
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
         // Ensures that the client will close when you finish/error
@@ -79,23 +106,21 @@ async function run() {
 }
 run().catch(console.dir);
 
-
-
-
 // Route to get all items
-app.get('/api/properites', async (req, res) => {
-    try {
-        // Read data from the JSON file
-        const data = await fs.readFile('slider.json', 'utf-8');
-        const items = JSON.parse(data);
 
-        // Send the items as a response
-        res.json(items);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
+// app.get('/api/properites', async (req, res) => {
+//     try {
+//         // Read data from the JSON file
+//         const data = await fs.readFile('slider.json', 'utf-8');
+//         const items = JSON.parse(data);
+
+//         // Send the items as a response
+//         res.json(items);
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// });
 
 // Route to get a specific item by ID
 app.get('/api/properites/:id', async (req, res) => {
