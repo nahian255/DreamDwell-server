@@ -36,6 +36,7 @@ async function run() {
         await client.connect();
 
         const properitesCollection = client.db('dreamDwell').collection('properitesInfo');
+        const messageCollection = client.db('dreamDwell').collection('messageCollection');
 
         // Read (Query) operation
         app.get('/api/properites', async (req, res) => {
@@ -52,19 +53,36 @@ async function run() {
         app.post('/api/add-properties', async (req, res) => {
             try {
                 const { name, details, price } = req.body;
-
                 // Create a document to be inserted
                 const propertyDocument = {
                     name,
                     details,
                     price,
                 };
-
                 // Insert a single document
                 const result = await properitesCollection.insertOne(propertyDocument);
-
                 console.log('Inserted property ID:', result.insertedId);
+                res.status(201).json({ message: 'Property added successfully' });
+            } catch (error) {
+                console.error('Error adding property:', error);
+                res.status(500).json({ error: 'Internal Server Error' });
+            }
+        });
 
+        // add message in database.
+        app.post('/api/add-message', async (req, res) => {
+            try {
+                const { name, email, message } = req.body;
+                // Create a document to be inserted
+                const propertyDocument = {
+                    name,
+                    email,
+                    message,
+                };
+                console.log(propertyDocument);
+                // Insert a single document
+                const result = await messageCollection.insertOne(propertyDocument);
+                console.log('Inserted property ID:', result.insertedId);
                 res.status(201).json({ message: 'Property added successfully' });
             } catch (error) {
                 console.error('Error adding property:', error);
@@ -77,6 +95,7 @@ async function run() {
         app.get('/api/single-properites/:id', async (req, res) => {
             try {
                 const itemId = req.params.id;
+
                 // Check if itemId is a valid ObjectId
                 if (!ObjectId.isValid(itemId)) {
                     return res.status(400).json({ error: 'Invalid ObjectID' });
