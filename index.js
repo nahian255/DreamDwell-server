@@ -37,6 +37,7 @@ async function run() {
 
         const properitesCollection = client.db('dreamDwell').collection('properitesInfo');
         const messageCollection = client.db('dreamDwell').collection('messageCollection');
+        const bookingCollection = client.db('dreamDwell').collection('bookingProperty');
 
         // Read (Query) operation
         app.get('/api/properites', async (req, res) => {
@@ -90,6 +91,24 @@ async function run() {
             }
         });
 
+        // add booking data in database.
+        app.post('/api/add-bookingProperty', async (req, res) => {
+            try {
+                const { dataId, name, detail, image, email, price, bathroom, rooms } = req.body;
+                // Create a document to be inserted
+                const bookingPropertyDocument = {
+                    dataId, name, detail, image, email, price, bathroom, rooms
+                };
+                console.log(bookingPropertyDocument);
+                // Insert a single document
+                const result = await bookingCollection.insertOne(bookingPropertyDocument);
+                console.log('Inserted property ID:', result.insertedId);
+                res.status(201).json({ message: 'Property added successfully' });
+            } catch (error) {
+                console.error('Error adding property:', error);
+                res.status(500).json({ error: 'Internal Server Error' });
+            }
+        });
 
         // get single property detials...
         app.get('/api/single-properites/:id', async (req, res) => {
@@ -113,9 +132,6 @@ async function run() {
         });
 
         // ...
-
-
-
 
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
