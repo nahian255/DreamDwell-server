@@ -40,6 +40,7 @@ async function run() {
         const bookingCollection = client.db('dreamDwell').collection('bookingProperty');
 
         // Read (Query) operation
+        // get all property here
         app.get('/api/properites', async (req, res) => {
             try {
                 const items = await properitesCollection.find().toArray();
@@ -80,7 +81,7 @@ async function run() {
                     email,
                     message,
                 };
-                console.log(propertyDocument);
+                // console.log(propertyDocument);
                 // Insert a single document
                 const result = await messageCollection.insertOne(propertyDocument);
                 console.log('Inserted property ID:', result.insertedId);
@@ -94,12 +95,12 @@ async function run() {
         // add booking data in database.
         app.post('/api/add-bookingProperty', async (req, res) => {
             try {
-                const { dataId, name, detail, image, email, price, bathroom, rooms } = req.body;
+                const { dataId, name, detail, image, email, price, bathroom, rooms, bookingConfirmed } = req.body;
                 // Create a document to be inserted
                 const bookingPropertyDocument = {
-                    dataId, name, detail, image, email, price, bathroom, rooms
+                    dataId, name, detail, image, email, price, bathroom, rooms, bookingConfirmed
                 };
-                console.log(bookingPropertyDocument);
+                // console.log(bookingPropertyDocument);
                 // Insert a single document
                 const result = await bookingCollection.insertOne(bookingPropertyDocument);
                 console.log('Inserted property ID:', result.insertedId);
@@ -114,7 +115,6 @@ async function run() {
         app.get('/api/single-properites/:id', async (req, res) => {
             try {
                 const itemId = req.params.id;
-
                 // Check if itemId is a valid ObjectId
                 if (!ObjectId.isValid(itemId)) {
                     return res.status(400).json({ error: 'Invalid ObjectID' });
@@ -131,12 +131,53 @@ async function run() {
             }
         });
 
-        // ...
+        // get booking property whith email..
+        app.get('/api/booking-properites', async (req, res) => {
+            try {
+                const userEmail = req.query.email;
+
+                // console.log(userEmail);
+                if (!userEmail) {
+                    // If email is not provided in query parameters, return a bad request response
+                    return res.status(400).json({ error: 'Email parameter is missing' });
+                }
+
+                // Query the bookingProperty collection for data with the specified email
+                const bookings = await bookingCollection.find({ email: userEmail }).toArray();
+
+                res.status(200).json(bookings);
+            } catch (error) {
+                console.error(error);
+                res.status(500).json({ error: 'Internal Server Error' });
+            }
+        });
+
+        // booking property delete
+        app.delete('/api/delete-booking-property/:id', async (req, res) => {
+            try {
+                const propertyId = req.params.id;
+                console.log(propertyId);
+                // Validate ObjectID
+                if (!ObjectId.isValid(propertyId)) {
+                    return res.status(400).json({ error: 'Invalid ObjectID for property' });
+                }
+                // Delete the property
+                const result = await bookingCollection.deleteOne({ _id: new ObjectId(propertyId) });
+                // Check if the deletion was successful
+                if (result.deletedCount > 0) {
+                    res.status(200).json({ message: 'Property deleted successfully' });
+                } else {
+                    res.status(404).json({ error: 'Property not found or deletion failed' });
+                }
+            } catch (error) {
+                console.error('Error deleting property:', error);
+                res.status(500).json({ error: 'Internal Server Error' });
+            }
+        });
 
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
         // Ensures that the client will close when you finish/error
-
     }
 }
 run().catch(console.dir);
@@ -158,27 +199,27 @@ run().catch(console.dir);
 // });
 
 // Route to get a specific item by ID
-app.get('/api/properites/:id', async (req, res) => {
-    try {
-        // Read data from the JSON file
-        const data = await fs.readFile('slider.json', 'utf-8');
-        const items = JSON.parse(data);
+// app.get('/api/properites/:id', async (req, res) => {
+//     try {
+//         // Read data from the JSON file
+//         const data = await fs.readFile('slider.json', 'utf-8');
+//         const items = JSON.parse(data);
 
-        // Find the item with the specified ID
-        const itemId = parseInt(req.params.id);
-        const item = items.find((i) => i.id === itemId);
+//         // Find the item with the specified ID
+//         const itemId = parseInt(req.params.id);
+//         const item = items.find((i) => i.id === itemId);
 
-        // If the item is found, send it as a response; otherwise, send a 404 error
-        if (item) {
-            res.json(item);
-        } else {
-            res.status(404).json({ error: 'Item not found' });
-        }
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
+//         // If the item is found, send it as a response; otherwise, send a 404 error
+//         if (item) {
+//             res.json(item);
+//         } else {
+//             res.status(404).json({ error: 'Item not found' });
+//         }
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// });
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
