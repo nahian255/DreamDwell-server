@@ -54,13 +54,10 @@ async function run() {
         // add a property in database.
         app.post('/api/add-properties', async (req, res) => {
             try {
-                const { name, details, price } = req.body;
+                const { name, email, details, image, location, price, bathrooms, rooms } = req.body;
                 // Create a document to be inserted
-                const propertyDocument = {
-                    name,
-                    details,
-                    price,
-                };
+                const propertyDocument = { name, email, details, image, location, price, bathrooms, rooms };
+
                 // Insert a single document
                 const result = await properitesCollection.insertOne(propertyDocument);
                 console.log('Inserted property ID:', result.insertedId);
@@ -174,6 +171,28 @@ async function run() {
                 res.status(500).json({ error: 'Internal Server Error' });
             }
         });
+
+        // get my-property whith email..
+        app.get('/api/myadded-properites', async (req, res) => {
+            try {
+                const userEmail = req.query.email;
+
+                // console.log(userEmail);
+                if (!userEmail) {
+                    // If email is not provided in query parameters, return a bad request response
+                    return res.status(400).json({ error: 'Email parameter is missing' });
+                }
+
+                // Query the bookingProperty collection for data with the specified email
+                const bookings = await properitesCollection.find({ email: userEmail }).toArray();
+                res.status(200).json(bookings);
+            } catch (error) {
+                console.error(error);
+                res.status(500).json({ error: 'Internal Server Error' });
+            }
+        });
+
+
 
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
