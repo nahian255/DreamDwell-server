@@ -4,7 +4,7 @@ const app = express()
 const port = 3000
 const cors = require('cors');
 require('dotenv').config();
-const Property = require('./models/property');
+// const Property = require('./models/property');
 const { ObjectId } = require('mongodb');
 
 
