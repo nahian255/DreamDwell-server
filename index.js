@@ -209,53 +209,12 @@ async function run() {
             }
         });
 
-
-
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
         // Ensures that the client will close when you finish/error
     }
 }
 run().catch(console.dir);
-
-// Route to get all items
-
-// app.get('/api/properites', async (req, res) => {
-//     try {
-//         // Read data from the JSON file
-//         const data = await fs.readFile('slider.json', 'utf-8');
-//         const items = JSON.parse(data);
-
-//         // Send the items as a response
-//         res.json(items);
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ error: 'Internal Server Error' });
-//     }
-// });
-
-// Route to get a specific item by ID
-// app.get('/api/properites/:id', async (req, res) => {
-//     try {
-//         // Read data from the JSON file
-//         const data = await fs.readFile('slider.json', 'utf-8');
-//         const items = JSON.parse(data);
-
-//         // Find the item with the specified ID
-//         const itemId = parseInt(req.params.id);
-//         const item = items.find((i) => i.id === itemId);
-
-//         // If the item is found, send it as a response; otherwise, send a 404 error
-//         if (item) {
-//             res.json(item);
-//         } else {
-//             res.status(404).json({ error: 'Item not found' });
-//         }
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ error: 'Internal Server Error' });
-//     }
-// });
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
