@@ -4,12 +4,11 @@ const app = express()
 const port = 3000
 const cors = require('cors');
 require('dotenv').config();
-// const Property = require('./models/property');
 const { ObjectId } = require('mongodb');
 
 
 // this is all about exprement
-const fs = require('fs/promises');
+// const fs = require('fs/promises');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -41,7 +40,7 @@ async function run() {
 
 
         // get all property here
-        app.get('/api/properites', async (req, res) => {
+        app.get('/properites', async (req, res) => {
             try {
                 const items = await properitesCollection.find().toArray();
                 res.send(items);
@@ -217,8 +216,12 @@ async function run() {
 run().catch(console.dir);
 
 app.get('/', (req, res) => {
-    res.send('Hello World!')
+    res.send('kam ar hoylo na')
 })
+
+// app.get('*', (req, res) => {
+//     res.status(404).send('Not Found');
+// });
 
 app.listen(port, () => {
     console.log(` Running but need to go faster port ${port}`)
