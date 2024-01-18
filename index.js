@@ -215,6 +215,9 @@ async function run() {
 }
 run().catch(console.dir);
 
+app.get('/last', (req, res) => {
+    res.send('this is another try')
+})
 app.get('/', (req, res) => {
     res.send('kam ar hoylo na')
 })
