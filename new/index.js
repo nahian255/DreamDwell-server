@@ -18,7 +18,7 @@ app.use(cors());
 
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = `mongodb+srv://Next-i2:${process.env.password}@cluster0.gwibbgy.mongodb.net/?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.user}:${process.env.password}@cluster0.gwibbgy.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -227,5 +227,5 @@ app.get('/', (req, res) => {
 // });
 
 app.listen(port, () => {
-    console.log(` Running but need to go faster port ${port}`)
+    console.log(`Running server well ${port}`)
 })
